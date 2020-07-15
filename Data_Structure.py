@@ -51,27 +51,42 @@ class HashMap:
     def __init__(self, array_size):
         self.array_size = array_size
         self.array = [None for i in range(array_size)]
+        self.biggest_collision = 0
 
-    def hash(self, key):
-        hash_value = 0
+    def hash(self, key, collision_count):
+        # returns number value of each letter
+        values = {'A': '', 'B': 1, 'C': 2, 'D': 3, 'E': '', 'F': 4, 'G': 5, 'H': 6, 'I': '', 'J': 7, 'K': 8, 'L': '', 'M': 9,
+              'N': '', 'O': '', 'P': 1, 'Q': 2, 'R': '', 'S': '', 'T': '', 'U': '', 'V': 3, 'W': 4, 'X': 5, 'Y': 6, 'Z': 7}
+        x = 0
+        hash_value = "1"
+        temp_value = ""
         for i in key:
-            hash_value += ord(i)
-        return hash_value
+            if len(hash_value) < 6:
+                    hash_value += str(values[i])
+            #if len(hash_value) > 5:
+                    #hash_value = str(int(hash_value) - collision_count)
+            x += 1
+        if collision_count > 0:
+            hash_value = str(int(hash_value) + collision_count)
+            print("hash: " +str(hash_value))
+
+        return int(hash_value)
 
     def assign(self, key, value, collision_count=0):
-        array_index = self.hash(key) + collision_count
-
+        array_index = self.hash(key, collision_count)
         if not self.array[array_index]:
             self.array[array_index] = Node(key, value)
         else:
             current_node = self.array[array_index].get_value()
             if current_node[0] != key:
+                #print("collision_count: {c}".format(c=collision_count))
                 collision_count += 1
                 self.assign(key, value, collision_count)
-                print("collision_count: {c}".format(c=collision_count))
+                if collision_count > self.biggest_collision:
+                    self.biggest_collision = collision_count
+                    print("big: " +str(self.biggest_collision))
             else:
-                self.array[array_index] = Node(key, value)
-
+               self.array[array_index] = Node(key, value)
 
     def retrieve(self, key, collision_count=0):
         array_index = self.hash(key) + collision_count

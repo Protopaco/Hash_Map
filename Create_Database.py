@@ -6,10 +6,12 @@ import pickle
 def read_file(file_name):
     # reads dictionary of eligible words, scores them, then pickles them to another file to be recalled later during
     # search functions
-    database = HashMap(50000)
+    database = HashMap(500000)
+    cnt = 0
     with open(file_name, 'r') as from_file:
         line = from_file.readline()
         while line:
+            cnt += 1
             line = line.strip()
             word_score = 0
             for i in line:
@@ -17,6 +19,9 @@ def read_file(file_name):
             #print("line: {l} wordscore: {w}".format(l=line, w=word_score))
             database.assign(line, word_score)
             line = from_file.readline()
+            if cnt % 1000 == 0:
+                print("cnt: {c}".format(c=cnt))
+    print("cnt: {c}".format(c=cnt))
 
 
 #def create_file(new_node):
