@@ -8,6 +8,7 @@ def read_file(file_name):
     # search functions
     database = HashMap(1000000)
     cnt = 0
+    collision_count = 0
     with open(file_name, 'r') as from_file:
         line = from_file.readline()
         while line:
@@ -17,11 +18,12 @@ def read_file(file_name):
             for i in line:
                 word_score += score(i)
             #print("line: {l} wordscore: {w}".format(l=line, w=word_score))
-            database.assign(line, word_score)
+            collision_count += database.assign(line, word_score)
             line = from_file.readline()
-            if cnt % 1000 == 0:
+            if cnt % 10000 == 0:
                 print("cnt: {c}".format(c=cnt))
     print("cnt: {c}".format(c=cnt))
+    print("Collision Count: {c}".format(c= collision_count))
 
 
 #def create_file(new_node):

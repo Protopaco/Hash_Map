@@ -82,14 +82,16 @@ class HashMap:
         if collision_count > 0 and collision_count < 10:
             hash_value[-1] = str(collision_count)
         elif collision_count > 9:
-            if collision_count < 50:
+            if collision_count < 20:
                 for i in str(collision_count):
                     hash_value[z] = i
                     z += 1
-            elif collision_count < 100:
+
+            elif collision_count < 50:
                 for i in str(collision_count):
                     hash_value[z] = i
                     z += 2
+
             elif collision_count < 150:
                 for i in str(collision_count):
                     hash_value[-z] = i
@@ -112,18 +114,48 @@ class HashMap:
                 if z % 2 == 0:
                     for i in str(collision_count):
                         hash_value[z] = i
+                        z += 1
                 else:
                     for i in str(collision_count):
                         hash_value[-z] = i
-                z += 1
+                        z += 1
             elif collision_count < 400:
+                for i in str(collision_count):
+                    if z % 2 == 0:
+                        hash_value[-z] = i
+                    else:
+                        hash_value[z] = i
+                    z += 1
+            elif collision_count < 450:
+                for i in str(collision_count):
+                    if z % 2 == 0:
+                        hash_value[-z] = i
+                    else:
+                        hash_value[z] = i
+                    z += 2
+            elif collision_count < 500:
+                for i in str(collision_count):
+                    if z % 2 == 0:
+                        hash_value[z] = i
+                    else:
+                        hash_value[-z] = i
+                    z += 1
+            elif collision_count < 550:
+                for i in str(collision_count):
+                    if z % 2 == 0:
+                        hash_value[z] = i
+                    else:
+                        hash_value[-z] = i
+                    z += 2
+            elif collision_count < 600:
                 if z % 2 == 0:
                     for i in str(collision_count):
-                        hash_value[-z] = i
+                        hash_value[z] = i
+                        z += 1
                 else:
                     for i in str(collision_count):
-                        hash_value[z] = i
-                z += 1
+                        hash_value[-z] = i
+                        z += 1
             else:
                 for i in str(collision_count):
                     hash_value[-z] = i
@@ -170,7 +202,7 @@ class HashMap:
                     self.assign(key, value, collision_count)
                     if collision_count > self.biggest_collision:
                         self.biggest_collision = collision_count
-                        print("big: " +str(self.biggest_collision))
+                        #print("big: " +str(self.biggest_collision))
                 except RecursionError:
                     print("RecursionError: {s}".format(s=self.array[array_index].get_value()))
                     print("Current_node {c} vs Key {k}".format(c=current_node, k = key))
@@ -178,6 +210,7 @@ class HashMap:
                     #print("Key: {k}".format(k=key))
             else:
                 self.array[array_index] = Node(key, value)
+        return collision_count
 
     def retrieve(self, key, collision_count=0):
         array_index = self.hash(key) + collision_count
