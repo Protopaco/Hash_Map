@@ -56,7 +56,7 @@ class HashMap:
     def hash(self, key, collision_count):
         # returns number value of each letter
         values = {'E': '0', 'T': '1', 'A': '2', 'O': '3', 'I': '4', 'N': '5', 'S': '6', 'R': '7', 'H': '8', 'D': '9', 'L': '9', 'U': '8', 'C': '7',
-              'M': '6', 'F': '5', 'Y': '6', 'W': '5', 'G': '4', 'P': '3', 'B': '2', 'V': '1', 'K': '', 'X': '', 'Q': '', 'J': '', 'Z': ''}
+              'M': '6', 'F': '5', 'Y': '6', 'W': '5', 'G': '4', 'P': '3', 'B': '2', 'V': '0', 'K': '0', 'X': '0', 'Q': '0', 'J': '0', 'Z': '0'}
         x = 0
         y = 0
         z = 0
@@ -82,35 +82,15 @@ class HashMap:
         if collision_count > 0 and collision_count < 10:
             hash_value[-1] = str(collision_count)
         elif collision_count > 9:
-            if collision_count < 20:
+            if collision_count < 100:
                 for i in str(collision_count):
                     hash_value[z] = i
                     z += 1
-
-            elif collision_count < 50:
-                for i in str(collision_count):
-                    hash_value[z] = i
-                    z += 2
-
-            elif collision_count < 150:
-                for i in str(collision_count):
-                    hash_value[-z] = i
-                    z += 2
             elif collision_count < 200:
                 for i in str(collision_count):
-                    hash_value[-z] = i
-                    z += 1
-            elif collision_count < 250:
-                z = 1
-                for i in str(collision_count):
                     hash_value[z] = i
-                    z += 1
+                    z += 2
             elif collision_count < 300:
-                z = -1
-                for i in str(collision_count):
-                    hash_value[z] = i
-                    z -= 1
-            elif collision_count < 350:
                 if z % 2 == 0:
                     for i in str(collision_count):
                         hash_value[z] = i
@@ -121,33 +101,23 @@ class HashMap:
                         z += 1
             elif collision_count < 400:
                 for i in str(collision_count):
-                    if z % 2 == 0:
-                        hash_value[-z] = i
-                    else:
-                        hash_value[z] = i
-                    z += 1
-            elif collision_count < 450:
-                for i in str(collision_count):
-                    if z % 2 == 0:
-                        hash_value[-z] = i
-                    else:
-                        hash_value[z] = i
+                    hash_value[-z] = i
                     z += 2
             elif collision_count < 500:
                 for i in str(collision_count):
-                    if z % 2 == 0:
-                        hash_value[z] = i
-                    else:
-                        hash_value[-z] = i
+                    hash_value[-z] = i
                     z += 1
-            elif collision_count < 550:
-                for i in str(collision_count):
-                    if z % 2 == 0:
-                        hash_value[z] = i
-                    else:
-                        hash_value[-z] = i
-                    z += 2
             elif collision_count < 600:
+                z = 1
+                for i in str(collision_count):
+                    hash_value[z] = i
+                    z += 1
+            elif collision_count < 700:
+                z = -1
+                for i in str(collision_count):
+                    hash_value[z] = i
+                    z -= 1
+            elif collision_count < 750:
                 if z % 2 == 0:
                     for i in str(collision_count):
                         hash_value[z] = i
@@ -156,6 +126,35 @@ class HashMap:
                     for i in str(collision_count):
                         hash_value[-z] = i
                         z += 1
+            elif collision_count < 800:
+                for i in str(collision_count):
+                    if z % 2 == 0:
+                        hash_value[-z] = i
+                    else:
+                        hash_value[z] = i
+                    z += 1
+            elif collision_count < 850:
+                for i in str(collision_count):
+                    if z % 2 == 0:
+                        hash_value[-z] = i
+                    else:
+                        hash_value[z] = i
+                    z += 2
+            elif collision_count < 900:
+                for i in str(collision_count):
+                    if z % 2 == 0:
+                        hash_value[z] = i
+                    else:
+                        hash_value[-z] = i
+                    z += 1
+            elif collision_count < 950:
+                for i in str(collision_count):
+                    if z % 2 == 0:
+                        hash_value[z] = i
+                    else:
+                        hash_value[-z] = i
+                    z += 2
+
             else:
                 for i in str(collision_count):
                     hash_value[-z] = i
