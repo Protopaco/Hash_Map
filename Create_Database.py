@@ -6,7 +6,7 @@ import pickle
 def read_file(file_name):
     # reads dictionary of eligible words, scores them, then pickles them to another file to be recalled later during
     # search functions
-    database = HashMap(500000)
+    database = HashMap(1000000)
     cnt = 0
     with open(file_name, 'r') as from_file:
         line = from_file.readline()

@@ -55,38 +55,129 @@ class HashMap:
 
     def hash(self, key, collision_count):
         # returns number value of each letter
-        values = {'A': '', 'B': 1, 'C': 2, 'D': 3, 'E': '', 'F': 4, 'G': 5, 'H': 6, 'I': '', 'J': 7, 'K': 8, 'L': '', 'M': 9,
-              'N': '', 'O': '', 'P': 1, 'Q': 2, 'R': '', 'S': '', 'T': '', 'U': '', 'V': 3, 'W': 4, 'X': 5, 'Y': 6, 'Z': 7}
+        values = {'E': '0', 'T': '1', 'A': '2', 'O': '3', 'I': '4', 'N': '5', 'S': '6', 'R': '7', 'H': '8', 'D': '9', 'L': '9', 'U': '8', 'C': '7',
+              'M': '6', 'F': '5', 'Y': '6', 'W': '5', 'G': '4', 'P': '3', 'B': '2', 'V': '1', 'K': '', 'X': '', 'Q': '', 'J': '', 'Z': ''}
         x = 0
-        hash_value = "1"
-        temp_value = ""
-        for i in key:
-            if len(hash_value) < 6:
-                    hash_value += str(values[i])
-            #if len(hash_value) > 5:
-                    #hash_value = str(int(hash_value) - collision_count)
-            x += 1
-        if collision_count > 0:
-            hash_value = str(int(hash_value) + collision_count)
-            print("hash: " +str(hash_value))
+        y = 0
+        z = 0
+        hash_value = []
+        for j in range(0,6):
+            hash_value.append(str(j))
 
-        return int(hash_value)
+        temp_value = 0
+        temp_str= "HELLOWORLD"
+        #print("key: {k}".format(k=key))
+        for i in key:
+            if x < 6:
+                hash_value[x] = values[i]
+                #print("hash_value: {h}".format(h=hash_value))
+            elif x % 2 == 0:
+                hash_value[-1] = values[i]
+            else:
+                hash_value[-2] = values[i]
+            x += 1
+        while len(hash_value) < 6:
+            hash_value.append(values[temp_str[y]])
+            y += 1
+        if collision_count > 0 and collision_count < 10:
+            hash_value[-1] = str(collision_count)
+        elif collision_count > 9:
+            if collision_count < 50:
+                for i in str(collision_count):
+                    hash_value[z] = i
+                    z += 1
+            elif collision_count < 100:
+                for i in str(collision_count):
+                    hash_value[z] = i
+                    z += 2
+            elif collision_count < 150:
+                for i in str(collision_count):
+                    hash_value[-z] = i
+                    z += 2
+            elif collision_count < 200:
+                for i in str(collision_count):
+                    hash_value[-z] = i
+                    z += 1
+            elif collision_count < 250:
+                z = 1
+                for i in str(collision_count):
+                    hash_value[z] = i
+                    z += 1
+            elif collision_count < 300:
+                z = -1
+                for i in str(collision_count):
+                    hash_value[z] = i
+                    z -= 1
+            elif collision_count < 350:
+                if z % 2 == 0:
+                    for i in str(collision_count):
+                        hash_value[z] = i
+                else:
+                    for i in str(collision_count):
+                        hash_value[-z] = i
+                z += 1
+            elif collision_count < 400:
+                if z % 2 == 0:
+                    for i in str(collision_count):
+                        hash_value[-z] = i
+                else:
+                    for i in str(collision_count):
+                        hash_value[z] = i
+                z += 1
+            else:
+                for i in str(collision_count):
+                    hash_value[-z] = i
+                    z += 1
+
+        #print("inside hash_value: {h}".format(h=hash_value))
+        temp_str = ""
+        temp_str = temp_str.join(hash_value[:6])
+        """
+        if collision_count > 900:
+            print("key: {k}".format(k=key) )
+            print("hash_value2: {h}".format(h=hash_value))
+            print("temp_str: " +temp_str)
+
+        if temp_str == "":
+            temp_str = values[key[0]] + '1'
+        """
+        try:
+            #print("inside hash_value: {h}".format(h=hash_value))
+            return int(temp_str)
+        except ValueError:
+            print("Value Error!")
+            print(temp_str)
+            return 0
 
     def assign(self, key, value, collision_count=0):
         array_index = self.hash(key, collision_count)
+        #print("key: {k}".format(k=key))
         if not self.array[array_index]:
-            self.array[array_index] = Node(key, value)
+                #print("space empty")
+                self.array[array_index] = Node(key, value)
         else:
+            """
+            if collision_count > 900:
+                print("array_index: {a}".format(a=str(array_index)))
+                print("Current_node {c} vs Key {k}".format(c=self.array[array_index].get_value(), k = key))
+            """
             current_node = self.array[array_index].get_value()
-            if current_node[0] != key:
-                #print("collision_count: {c}".format(c=collision_count))
-                collision_count += 1
-                self.assign(key, value, collision_count)
-                if collision_count > self.biggest_collision:
-                    self.biggest_collision = collision_count
-                    print("big: " +str(self.biggest_collision))
+            if current_node != key:
+                try:
+                    #print("collision_count: {c}".format(c=collision_count))
+                    #print("Already in space: {a}".format(a=self.array[array_index].get_value()))
+                    collision_count += 1
+                    self.assign(key, value, collision_count)
+                    if collision_count > self.biggest_collision:
+                        self.biggest_collision = collision_count
+                        print("big: " +str(self.biggest_collision))
+                except RecursionError:
+                    print("RecursionError: {s}".format(s=self.array[array_index].get_value()))
+                    print("Current_node {c} vs Key {k}".format(c=current_node, k = key))
+                    print("array_index:  {a}".format(a=array_index))
+                    #print("Key: {k}".format(k=key))
             else:
-               self.array[array_index] = Node(key, value)
+                self.array[array_index] = Node(key, value)
 
     def retrieve(self, key, collision_count=0):
         array_index = self.hash(key) + collision_count
