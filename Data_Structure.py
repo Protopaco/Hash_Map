@@ -53,13 +53,14 @@ class HashMap:
         self.array = [None for i in range(array_size)]
         self.biggest_collision = 0
 
-    def hash(self, key, collision_count):
+    def hash(self, key, test_value, collision_count):
         # returns number value of each letter
         values = {'E': '0', 'T': '1', 'A': '2', 'O': '3', 'I': '4', 'N': '5', 'S': '6', 'R': '7', 'H': '8', 'D': '9', 'L': '9', 'U': '8', 'C': '7',
               'M': '6', 'F': '5', 'Y': '6', 'W': '5', 'G': '4', 'P': '3', 'B': '2', 'V': '0', 'K': '0', 'X': '0', 'Q': '0', 'J': '0', 'Z': '0'}
         x = 0
         y = 0
         z = 0
+        values[test_value[0]] = test_value[1]
         hash_value = []
         for j in range(0,6):
             hash_value.append(str(j))
@@ -180,8 +181,8 @@ class HashMap:
             print(temp_str)
             return 0
 
-    def assign(self, key, value, collision_count=0):
-        array_index = self.hash(key, collision_count)
+    def assign(self, key, value, test_value, collision_count=0,):
+        array_index = self.hash(key, test_value, collision_count)
         #print("key: {k}".format(k=key))
         if not self.array[array_index]:
                 #print("space empty")
@@ -198,14 +199,15 @@ class HashMap:
                     #print("collision_count: {c}".format(c=collision_count))
                     #print("Already in space: {a}".format(a=self.array[array_index].get_value()))
                     collision_count += 1
-                    self.assign(key, value, collision_count)
+                    self.assign(key, value, test_value, collision_count)
                     if collision_count > self.biggest_collision:
                         self.biggest_collision = collision_count
                         #print("big: " +str(self.biggest_collision))
                 except RecursionError:
-                    print("RecursionError: {s}".format(s=self.array[array_index].get_value()))
-                    print("Current_node {c} vs Key {k}".format(c=current_node, k = key))
-                    print("array_index:  {a}".format(a=array_index))
+                    collision_count += 1000
+                    #print("RecursionError: {s}".format(s=self.array[array_index].get_value()))
+                    #print("Current_node {c} vs Key {k}".format(c=current_node, k = key))
+                    #print("array_index:  {a}".format(a=array_index))
                     #print("Key: {k}".format(k=key))
             else:
                 self.array[array_index] = Node(key, value)
