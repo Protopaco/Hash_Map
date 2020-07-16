@@ -9,26 +9,22 @@ def read_file(file_name):
     database = HashMap(1000000)
     cnt = 0
     collision_count = 0
-    test_values = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K,' 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-    test_numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     with open(file_name, 'r') as from_file:
-        for j in test_values:
-            for k in test_numbers:
-                test = [j, k]
-                line = from_file.readline()
-                while line:
-                    cnt += 1
-                    line = line.strip()
-                    word_score = 0
-                    for i in line:
-                        word_score += score(i)
-                    collision_count += database.assign(line, word_score, test)
-                    line = from_file.readline()
-                    #if cnt % 10000 == 0:
-                        #print("cnt: {c}".format(c=cnt))
-        #print("cnt: {c}".format(c=cnt))
-        print("{j} == {k}".format(j=j, k=k))
-        print("Collision Count: {c}\n\n".format(c= collision_count))
+        line = from_file.readline()
+        while line:
+            cnt += 1
+            line = line.strip()
+            word_score = 0
+            for i in line:
+                word_score += score(i)
+            collision_count += database.assign(line, word_score)
+            line = from_file.readline()
+            if cnt % 10000 == 0:
+                print("cnt: {c}".format(c=cnt))
+                #print("Collision Count: {c}\n\n".format(c=collision_count))
+        print("cnt: {c}".format(c=cnt))
+        print("Collision Count: {c}\n\n".format(c=collision_count))
+        print("avg: {a}".format(a=collision_count/cnt))
 
 
 #def create_file(new_node):
