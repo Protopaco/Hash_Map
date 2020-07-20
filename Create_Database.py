@@ -1,4 +1,4 @@
-from Data_Structure import Node, LinkedList, HashMap
+from Data_Structure import HashMap
 
 import pickle
 
@@ -19,22 +19,16 @@ def read_file(file_name):
                 word_score += score(i)
             collision_count += database.assign(line, word_score)
             line = from_file.readline()
-            if cnt % 10000 == 0:
-                print("cnt: {c}".format(c=cnt))
-                #print("Collision Count: {c}\n\n".format(c=collision_count))
-        print("cnt: {c}".format(c=cnt))
-        print("Collision Count: {c}\n\n".format(c=collision_count))
+        print("\ncnt: {c}".format(c=cnt))
+        print("Collision Count: {c}".format(c=collision_count))
         print("avg: {a}".format(a=collision_count/cnt))
 
-
-#def create_file(new_node):
-#pass
-
+    write_file(database)
 
 
 def write_file(database):
-    with open('score_saves.scr', 'a') as to_file:
-        dbfile = open('score_saves.scr', 'wb')
+    with open('score_saves.txt', 'a') as to_file:
+        dbfile = open('score_saves.txt', 'wb')
         pickle.dump(database, dbfile)
         dbfile.close()
         print("Database created!")

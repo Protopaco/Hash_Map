@@ -1,19 +1,18 @@
 
 class Node:
-    def __init__(self, value, next_node = None):
-        self.value = value
-        self.next_node = next_node
+    def __init__(self, key, value):
+        self.data = (key, value)
 
-    def set_next_node(self, next_node):
-        self.next_node = next_node
-
-    def get_next_node(self):
-        return self.next_node
+    def get_data(self):
+        return self.data
 
     def get_value(self):
-        return self.value
+        return self.data[1]
 
+    def get_key(self):
+        return self.data[0]
 
+"""
 class LinkedList:
     def __init__(self, limit = None):
         self.top_item = None
@@ -46,14 +45,12 @@ class LinkedList:
 
     def is_empty(self):
         return self.size == 0
-
+"""
 class HashMap:
     def __init__(self, array_size):
         self.array_size = array_size
         self.array = [None for i in range(array_size)]
         self.biggest_collision = 0
-
-
 
 
     def hash(self, key, collision_count):
@@ -67,6 +64,7 @@ class HashMap:
 
         for i in key:
             hash_value.append(values[i])
+
         hash_value.append(str(collision_count))
         temp_array = temp_array.join(hash_value)
         temp_array = str(int(temp_array) % list_size)
@@ -78,28 +76,18 @@ class HashMap:
 
     def assign(self, key, value, collision_count=0):
         array_index = self.hash(key, collision_count)
-        #print("key: {k}".format(k=key))
         if not self.array[array_index]:
-                #print("space empty")
                 self.array[array_index] = Node(key, value)
         else:
-            """
-            if collision_count > 900:
-                print("array_index: {a}".format(a=str(array_index)))
-                print("Current_node {c} vs Key {k}".format(c=self.array[array_index].get_value(), k = key))
-            """
-            current_node = self.array[array_index].get_value()
+            current_node = self.array[array_index].get_key()
             if current_node != key:
                 try:
-                    #print("collision_count: {c}".format(c=collision_count))
-                    #print("Already in space: {a}".format(a=self.array[array_index].get_value()))
                     collision_count += 1
                     self.assign(key, value, collision_count)
                     if collision_count > self.biggest_collision:
                         self.biggest_collision = collision_count
-                        print("big: " +str(self.biggest_collision))
                 except RecursionError:
-                    print("RecursionError: {s}".format(s=self.array[array_index].get_value()))
+                    print("RecursionError: {s}".format(s=self.array[array_index].get_key()))
                     print("Current_node {c} vs Key {k}".format(c=current_node, k = key))
                     print("array_index:  {a}".format(a=array_index))
                     print("Key: {k}".format(k=key))
@@ -108,12 +96,14 @@ class HashMap:
         return collision_count
 
     def retrieve(self, key, collision_count=0):
-        array_index = self.hash(key) + collision_count
-        current_node = self.array[array_index].get_value()
-        if not self.array[array_index].is_empty() and current_node[0] != key:
+        array_index = self.hash(key, collision_count)
+        current_node = self.array[array_index].get_data()
+        #print("current_node = {c}".format(c=current_node))
+        while current_node[0] != key:
+            #print("current_node = {c}".format(c=current_node))
             collision_count += 1
-            print("collision_count: {c}".format(c=collision_count))
-            self.assign(key, collision_count)
+            #print("collision_count: {c}".format(c=collision_count))
+            array_index = self.hash(key, collision_count)
+            current_node = self.array[array_index].get_data()
 
-        else:
-            return current_node
+        return current_node
